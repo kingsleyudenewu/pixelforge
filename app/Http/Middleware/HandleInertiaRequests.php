@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Nanodollars;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +43,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'credits' => fn (): ?array => $request->user() === null ? null : [
+                'balance' => Nanodollars::toDecimal($request->user()->credit_balance_nanos),
+                'packs' => config('billing.credit_packs'),
+            ],
         ];
     }
 }
