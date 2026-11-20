@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use App\Support\Nanodollars;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -31,6 +32,26 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];
+    }
+
+    /**
+     * An operator who can see the admin report.
+     */
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_admin' => true,
+        ]);
+    }
+
+    /**
+     * Start with a credit balance, given in dollars (e.g. "10.00").
+     */
+    public function withCredits(string $dollars): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'credit_balance_nanos' => Nanodollars::fromDecimal($dollars),
+        ]);
     }
 
     /**
