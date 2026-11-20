@@ -359,11 +359,3 @@ The app needs three processes in production:
 1. **Web server:** PHP-FPM, Laravel Cloud, Forge, or similar.
 2. **Queue worker:** `php artisan queue:work`. Without it, generations stay queued forever.
 3. **Scheduler:** `php artisan schedule:work`, or a cron entry running `php artisan schedule:run` every minute. This drives `pixelforge:sync`.
-
-Checklist:
-
-- [ ] `APP_ENV=production`, `APP_DEBUG=false`, `APP_URL` set to the public URL
-- [ ] A production-only `PIXELFORGE_API_KEY`
-- [ ] Webhook URL `https://<your-domain>/api/webhooks/pixelforge` registered in Pixelforge, with its secret in `PIXELFORGE_WEBHOOK_SECRET`
-- [ ] A cache store that supports atomic locks (the default `database` store does)
-- [ ] `php artisan migrate --force` and `npm run build` on each deploy
